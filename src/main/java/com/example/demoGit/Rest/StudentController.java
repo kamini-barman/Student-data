@@ -1,9 +1,9 @@
 package com.example.demoGit.Rest;
 
 import com.example.demoGit.model.Student;
-
 import com.example.demoGit.service.StudentService;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,25 +11,38 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 public class StudentController {
 
     @Autowired
     private StudentService studentServ;
 
-    @PostMapping("/students")
-    public ResponseEntity<Student> addStudent(@RequestBody  Student student){
-        Student s = studentServ.addStudent(student);
-        return  new ResponseEntity<Student>(s, HttpStatus.CREATED);
-    }
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
+
+
+@PostMapping("/addStudent")
+private Student add(@RequestBody Student student) {
+    LOG.info("Add student data");
+    return studentServ.save(student);
+}
+
+
 
     @GetMapping("/allStudents")
     public ResponseEntity <List<Student> >getstudents(){
+        LOG.info("Getting all students.");
         List<Student> studentList =studentServ.getAllStudents();
         return  new ResponseEntity <List<Student>> (studentList,HttpStatus.OK);
 
     }
+
+   // @PutMapping("")
+    @DeleteMapping("/deleteStudent/{id}")
+   public String deleteStudentByID(@PathVariable("id") Integer ID){
+        LOG.info("Delete Student by Id.");
+        studentServ.deleteStudentById(ID);
+        return "Deleted Successfully";
+   }
 }
 //@RestController
 //@RequestMapping(value = "/")

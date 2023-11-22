@@ -13,11 +13,6 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentRepo studentRepo;
 
-    @Override
-    public Student addStudent(Student student) {
-        Student addedStudent = studentRepo.save(student);
-        return addedStudent;
-    }
 
     @Override
     public List<Student> getAllStudents() {
@@ -25,5 +20,23 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
+    @Override
+    public void deleteStudentById(Integer ID){
+        studentRepo.deleteById(ID);
+    }
+
+    @Override
+    public Student save(Student student) {
+        return studentRepo.save(student);
+    }
+
+    @Override
+    public void update(Student student) {
+        Student s = new Student();
+        s.setName(student.getName());
+        s.setAge(student.getAge());
+        s.setSalary(student.getSalary());
+        studentRepo.save(student);
+    }
 
 }
